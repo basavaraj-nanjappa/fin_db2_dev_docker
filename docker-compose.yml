@@ -1,0 +1,48 @@
+version: '3.9'
+
+# Refer https://www.ibm.com/docs/en/db2/11.5?topic=system-macos
+
+# On Mac Apple silicon, had to run "export DOCKER_DEFAULT_PLATFORM=linux/amd64" before executing docker-compose commands to start the container
+# we can also set it to x86 "export DOCKER_DEFAULT_PLATFORM=linux/x86_64"
+# Else you may see this type of error "no matching manifest for linux/arm64/v8 in the manifest list entries"
+# you may verify available OS Manifests using "docker manifest inspect icr.io/db2_community/db2:11.5"
+# docker manifest inspect icr.io/db2_community/db2
+
+services:
+
+  fin_dev_db2:
+    # image: icr.io/db2_community/db2:11.5
+    image: icr.io/db2_community/db2
+    platform: linux/amd64
+    container_name: fin_dev_db2
+    restart: always
+    privileged: true
+    volumes:
+      - $PWD/data/db2server_ce:/database
+      - $PWD/user:/home/user/
+    ports:
+      - 50000:50000
+    environment:
+      LICENSE: accept
+      DB2INSTANCE: db2admin
+      DB2INST1_PASSWORD: Financials1
+      DBNAME: db2admin
+      BLU: false
+      ENABLE_ORACLE_COMPATIBILITY: false
+      UPDATEAVAIL: NO
+      TO_CREATE_SAMPLEDB: true
+      REPODB: false
+      IS_OSXFS: true
+      PERSISTENT_HOME: true
+      HADR_ENABLED: false #High Availability Disaster Recoever, we don't need it locally
+
+# First time, get into the container, and run some of these below commands
+# "su db2admin" : for using DB instance db2admin
+# "db2admin" : starts the DB2 instance as sample
+
+# db2 # enter into db2 prompt
+# connect to db2admin
+# SELECT CURRENT SERVER FROM SYSIBM.SYSDUMMY1; # Helps you know which database you have connected
+# list tables
+# SELECT COOUNT(*) FROM PURCHASEORDER; # some sample query 
+
