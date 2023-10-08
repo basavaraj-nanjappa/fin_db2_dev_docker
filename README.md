@@ -6,6 +6,7 @@
 If you  are running on Mac OS, you may use this
 ```unix
 $ export DOCKER_DEFAULT_PLATFORM=linux/amd64
+$ docker-comopose up -d
 ```
 or you may enable (uncomment) command `platform: linux/amd64` in the docker-compose or set the manifest as per your Operating System (OS)
 
