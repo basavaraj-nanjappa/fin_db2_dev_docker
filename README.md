@@ -10,3 +10,5 @@ $ docker-comopose up -d
 ```
 or you may enable (uncomment) command `platform: linux/amd64` in the docker-compose or set the manifest as per your Operating System (OS)
 
+#### How to stop this and remvoe the container
+`$ docker-compose down `

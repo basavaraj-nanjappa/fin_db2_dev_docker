@@ -18,8 +18,8 @@ services:
     restart: always
     privileged: true
     volumes:
-      - $PWD/data/db2server_ce:/database
-      - $PWD/user:/home/user/
+      - $PWD/data/db2server_ce/database:/database/
+      - $PWD/fin_db2/user:/home/user/
     ports:
       - 50000:50000
     environment:
