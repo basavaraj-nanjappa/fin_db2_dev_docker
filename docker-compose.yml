@@ -17,9 +17,13 @@ services:
     container_name: fin_dev_db2
     restart: always
     privileged: true
+    # volumes:
+    #   - $PWD/data:/database/
+    #   - $PWD/user_home:/home/user/
     volumes:
-      - $PWD/data/db2server_ce/database:/database/
-      - $PWD/fin_db2/user:/home/user/
+      - db2_database_data:/database
+    #   - db2server_ce:/database
+    #   - user_home:/home/user
     ports:
       - 50000:50000
     environment:
@@ -36,6 +40,25 @@ services:
       PERSISTENT_HOME: true
       HADR_ENABLED: false #High Availability Disaster Recoever, we don't need it locally
 
+volumes:
+  db2_database_data:
+    driver: local
+
+# volumes:
+#   db2server_ce:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: $PWD/data/database
+#       o: bind
+#   user_home:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: $PWD/user_home
+#       o: bind
+    
+
 # First time, get into the container, and run some of these below commands
 # "su db2admin" : for using DB instance db2admin
 # "db2admin" : starts the DB2 instance as sample
@@ -46,3 +69,8 @@ services:
 # list tables
 # SELECT COOUNT(*) FROM PURCHASEORDER; # some sample query 
 
+# Use a db2 ide like DBeaver and create schema db2admin and then create tables and select to test
+# create a table purchase order with purchase_order_id, desc, amount and date
+# CREATE TABLE PURCHASEORDER (PURCHASE_ORDER_ID INT NOT NULL PRIMARY KEY, DESCRIPTION VARCHAR(50), AMOUNT DECIMAL(10,2), DATE DATE);
+# INSERT INTO PURCHASEORDER values (1, 'Purchase Order 1', 100.00, '2021-01-01');
+# INSERT INTO PURCHASEORDER values (2, 'Another Purchase Order', 30.09, '2021-01-02');insert into purchaseorder values (1, 'Purchase Order 1', 100.00, '2021-01-01');
